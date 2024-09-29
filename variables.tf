@@ -4,7 +4,7 @@ variable "pj_tags" {
     env  = string
   })
   default = {
-    name = "mokumoku"
+    name = "hoge"
     env  = "test"
   }
 }

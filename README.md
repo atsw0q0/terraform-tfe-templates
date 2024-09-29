@@ -46,6 +46,12 @@ terraform apply
 
 - 後始末
 
+はじめに HCP Terraform のワークスペース上で管理しているリソースを削除。リソースが Destroy されたことが確認できてば OK。
+
+![alt](./img/delete.png)
+
+- ワークスペースなどの削除。
+
 ```sh
 # リソース削除
 terraform destroy

@@ -23,15 +23,15 @@ resource "aws_iam_openid_connect_provider" "terraform" {
 
 
 resource "aws_iam_role" "role" {
-  name = format("%s-%s-role-hcptfm-mokumoku", var.pj_tags.name, var.pj_tags.env)
+  name = format("%s-%s-role-hcptfm", var.pj_tags.name, var.pj_tags.env)
   path = "/"
   assume_role_policy = templatefile(
     "./files/iam_trust_relationship.json",
     {
       account_id   = data.aws_caller_identity.current.account_id
-      organization = tfe_organization.test.id
-      project      = "*" # pj-aws
-      workspace    = "*" # format("%s-%s-mokumoku", var.pj_tags.name, var.pj_tags.env)
+      organization = tfe_organization.main.id
+      project      = "*" # プロジェクト名
+      workspace    = "*" # ワークスペース名
     }
   )
   max_session_duration = 3600
