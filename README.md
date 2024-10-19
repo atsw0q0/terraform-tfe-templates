@@ -24,6 +24,15 @@ token                      = "HCP Terraform のAPI トークン"
 vcs_repository             = "上記GitHub リポジトリ A"              # [username]/[repository_name]"
 github_app_installation_id = "Github App OAuth Token"             # ghain-xxxx
 
+# HCP Terraform 上での organizations、project、workspace名をここで定義する
+pj_prefix = {
+    name = "atsuw0"
+    env = "test"
+    org_name = "org"
+    project_name = "aws"
+    workspace_name = "chatops"
+}
+
 # ↓ 「GitHub リポジトリ A」のvariablesに渡したい引数とかをここに定義
 pj_tfm_vars = {
   name = "chuosen"
