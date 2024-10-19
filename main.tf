@@ -3,29 +3,29 @@
 
 # Organizations
 resource "tfe_organization" "main" {
-  name  = format("%s-%s-org", var.pj_tags.name, var.pj_tags.env)
+  name  = format("%s-%s-%s", var.pj_prefix.name, var.pj_prefix.env, var.pj_prefix.org_name)
   email = var.org_manager_email
 }
 
 
 # Projects
-resource "tfe_project" "aws" {
+resource "tfe_project" "pj" {
   organization = tfe_organization.main.name
-  name         = "pj-aws"
+  name         = format("%s-%s-%s", var.pj_prefix.name, var.pj_prefix.env, var.pj_prefix.project_name)
 }
 
 
 # Workspaces
 resource "tfe_workspace" "network" {
-  name         = format("%s-%s-network", var.pj_tags.name, var.pj_tags.env)
+  name         = format("%s-%s-%s", var.pj_prefix.name, var.pj_prefix.env, var.pj_prefix.workspace_name)
   organization = tfe_organization.main.name
-  project_id   = tfe_project.aws.id
+  project_id   = tfe_project.pj.id
   vcs_repo {
     identifier                 = var.vcs_repository
     branch                     = "main"
     github_app_installation_id = var.github_app_installation_id
-
   }
+  working_directory = var.repository_working_directory
 }
 
 resource "tfe_workspace_settings" "network" {

@@ -1,3 +1,7 @@
+data "tls_certificate" "provider" {
+  url = "https://app.terraform.io"
+}
+
 data "aws_caller_identity" "current" {}
 
 # data "aws_iam_openid_connect_provider" "terraform" {
@@ -13,17 +17,17 @@ resource "aws_iam_openid_connect_provider" "terraform" {
   ]
 
   thumbprint_list = [
-    "9e99a48a9960b14926bb7f3b02e22da2b0ab7280",
+    data.tls_certificate.provider.certificates[0].sha1_fingerprint,
   ]
   tags = {
-    PJ  = var.pj_tags.name
-    Env = var.pj_tags.env
+    PJ  = var.pj_prefix.name
+    Env = var.pj_prefix.env
   }
 }
 
 
 resource "aws_iam_role" "role" {
-  name = format("%s-%s-role-hcptfm", var.pj_tags.name, var.pj_tags.env)
+  name = format("%s-%s-role-hcptfm", var.pj_prefix.name, var.pj_prefix.env)
   path = "/"
   assume_role_policy = templatefile(
     "./files/iam_trust_relationship.json",
@@ -39,7 +43,7 @@ resource "aws_iam_role" "role" {
     "arn:aws:iam::aws:policy/AdministratorAccess"
   ]
   tags = {
-    PJ  = var.pj_tags.name
-    Env = var.pj_tags.env
+    PJ  = var.pj_prefix.name
+    Env = var.pj_prefix.env
   }
 }
